@@ -4,7 +4,7 @@ import java.util.Random;
 import javax.swing.*;
 
 /**
- * Tetris - versione semplice con funzionalità comuni e punti di estensione per future feature.
+ * Tetris
  *
  * Documentazione generale (scopo e possibili estensioni):
  * - Questa classe estende JPanel e implementa ActionListener per gestire il loop di gioco
@@ -70,10 +70,43 @@ public class Tetris extends JPanel implements ActionListener {
     private int[][] formaPezzo; // matrice 0/1 della forma del pezzo corrente (ruotabile)
     private Tipo tipoPezzo, prossimo, hold; // tipo attuale, prossimo e hold
     private int pezzoRiga, pezzoCol; // posizione (riga, colonna) del corner superiore sinistro della forma
-    private int punteggio, livello = 1, righeTotal, velocita; // statistiche partita
+    private int punteggio, livello = 1, righeTotal, velocita = VELOCITA_INIZIALE; // statistica partita (velocita ha default)
     private boolean inCorso, pausa, gameOver, puoHold = true; // stati di controllo
     private Timer timer; // loop di gioco basato su Swing Timer
     private Random random = new Random(); // generator per pezzi casuali
+
+    // Imposta la velocità iniziale in base alla stringa di difficoltà
+    private void setDifficolta(String diff) {
+        if (diff == null) { velocita = VELOCITA_INIZIALE; return; }
+        switch (diff.toLowerCase()) {
+            case "facile" -> velocita = 800;
+            case "normale" -> velocita = VELOCITA_INIZIALE;
+            case "difficile" -> velocita = 300;
+            case "impossibile" -> velocita = 150;
+            default -> velocita = VELOCITA_INIZIALE;
+        }
+    }
+
+    // Mostra una finestra di scelta difficoltà all'avvio e applica la scelta
+    private void scegliDifficolta() {
+        Object[] opzioni = {"Facile", "Normale", "Difficile"};
+        int scelta = JOptionPane.showOptionDialog(
+                null,
+                "Scegli la difficoltà:",
+                "Difficoltà",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opzioni,
+                opzioni[1]
+        );
+        switch (scelta) {
+            case 0 -> setDifficolta("facile");
+            case 1 -> setDifficolta("normale");
+            case 2 -> setDifficolta("difficile");
+            default -> setDifficolta("normale");
+        }
+    }
 
     /**
      * Costruttore: configura dimensioni pannello, colore di sfondo, listener dei tasti
@@ -85,6 +118,9 @@ public class Tetris extends JPanel implements ActionListener {
      * - Il pannello prevede spazio extra a destra per pannello informazioni (prossimo/hold).
      */
     public Tetris() {
+        // scegli difficoltà all'avvio
+        scegliDifficolta();
+
         setPreferredSize(new Dimension(COLONNE * CELLA + 150, RIGHE * CELLA));
         setBackground(new Color(26, 26, 46));
         setFocusable(true);
@@ -113,7 +149,7 @@ public class Tetris extends JPanel implements ActionListener {
         for (int r = 0; r < RIGHE; r++)
             for (int c = 0; c < COLONNE; c++) griglia[r][c] = Tipo.NESSUNO;
         punteggio = righeTotal = 0; livello = 1;
-        velocita = VELOCITA_INIZIALE;
+        // non toccare velocita qui: rimane quella impostata dalla difficoltà
         hold = null; puoHold = true;
         inCorso = true; pausa = gameOver = false;
         prossimo = TIPI[random.nextInt(7)];
@@ -144,7 +180,7 @@ public class Tetris extends JPanel implements ActionListener {
         pezzoCol = COLONNE / 2 - formaPezzo[0].length / 2;
         puoHold = true;
         if (!valido(formaPezzo, pezzoRiga, pezzoCol)) {
-            gameOver = true; inCorso = false; timer.stop();
+            gameOver = true; inCorso = false; if (timer != null) timer.stop();
         }
     }
 
@@ -272,7 +308,7 @@ public class Tetris extends JPanel implements ActionListener {
             if (nuovoLiv > livello) {
                 livello = nuovoLiv;
                 velocita = Math.max(VELOCITA_MIN, VELOCITA_INIZIALE - (livello-1) * 50);
-                timer.setDelay(velocita);
+                if (timer != null) timer.setDelay(velocita);
             }
         }
         nuovoPezzo();
