@@ -86,6 +86,7 @@ Il file contiene:
 
 Il progetto è stato pensato per essere espandibile. Idee per versioni avanzate:
 
+- Implementazione di un menù all'avvio dell'applicativo per la scelta della difficoltà del gioco
 - Sistema 7-bag per generazione più equa dei pezzi
 - Implementazione completa dello **SRS** (Super Rotation System)
 - Animazioni, ombre e effetti grafici
