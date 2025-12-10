@@ -1,7 +1,7 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+import javax.swing.*;
 
 /**
  * Tetris - versione semplice con funzionalità comuni e punti di estensione per future feature.
