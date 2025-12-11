@@ -65,17 +65,18 @@ public class Tetris extends JPanel implements ActionListener {
 
     private static final Tipo[] TIPI = {Tipo.I, Tipo.O, Tipo.T, Tipo.S, Tipo.Z, Tipo.J, Tipo.L};
 
-    /* Stato del gioco (model). Separare in una classe GameState renderà il codice più testabile. */
-    private Tipo[][] griglia = new Tipo[RIGHE][COLONNE]; // matrice di celle bloccate
-    private int[][] formaPezzo; // matrice 0/1 della forma del pezzo corrente (ruotabile)
-    private Tipo tipoPezzo, prossimo, hold; // tipo attuale, prossimo e hold
-    private int pezzoRiga, pezzoCol; // posizione (riga, colonna) del corner superiore sinistro della forma
-    private int punteggio, livello = 1, righeTotal, velocita = VELOCITA_INIZIALE; // statistica partita (velocita ha default)
-    private boolean inCorso, pausa, gameOver, puoHold = true; // stati di controllo
-    private Timer timer; // loop di gioco basato su Swing Timer
-    private Random random = new Random(); // generator per pezzi casuali
-
-    // Imposta la velocità iniziale in base alla stringa di difficoltà
+    /**
+     * Imposta la velocità di caduta dei pezzi in base alla difficoltà selezionata.
+     * 
+     * @param diff Stringa che indica la difficoltà ("facile", "normale", "difficile", "impossibile").
+     *             Se null o non riconosciuta, viene applicata la velocità iniziale di default.
+     * 
+     * Valori di velocità (in millisecondi tra ogni caduta):
+     * - Facile: 800ms (più lento)
+     * - Normale: VELOCITA_INIZIALE (default)
+     * - Difficile: 300ms
+     * - Impossibile: 150ms (più veloce)
+     */
     private void setDifficolta(String diff) {
         if (diff == null) { velocita = VELOCITA_INIZIALE; return; }
         switch (diff.toLowerCase()) {
@@ -87,7 +88,15 @@ public class Tetris extends JPanel implements ActionListener {
         }
     }
 
-    // Mostra una finestra di scelta difficoltà all'avvio e applica la scelta
+    /**
+     * Mostra una finestra di dialogo modale per la selezione della difficoltà all'avvio del gioco.
+     * Utilizza JOptionPane per presentare tre opzioni: Facile, Normale, Difficile.
+     * 
+     * Comportamento:
+     * - L'opzione "Normale" è preselezionata di default
+     * - Se l'utente chiude la finestra senza scegliere, viene applicata la difficoltà normale
+     * - La scelta viene passata al metodo setDifficolta() per configurare la velocità
+     */
     private void scegliDifficolta() {
         Object[] opzioni = {"Facile", "Normale", "Difficile"};
         int scelta = JOptionPane.showOptionDialog(
