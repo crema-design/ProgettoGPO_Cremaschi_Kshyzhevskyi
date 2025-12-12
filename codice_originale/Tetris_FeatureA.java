@@ -521,7 +521,7 @@ public class Tetris_FeatureA extends JPanel implements ActionListener {
             JFrame f = new JFrame("Tetris");
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             f.setResizable(false);
-            f.add(new Tetris());
+            f.add(new Tetris_FeatureA());
             f.pack();
             f.setLocationRelativeTo(null);
             f.setVisible(true);
