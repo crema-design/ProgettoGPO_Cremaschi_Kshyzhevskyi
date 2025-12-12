@@ -4,7 +4,7 @@ import java.util.Random;
 import javax.swing.*;
 
 /**
- * Tetris - versione semplice con funzionalità comuni e punti di estensione per future feature.
+ * Tetris
  *
  * Documentazione generale (scopo e possibili estensioni):
  * - Questa classe estende JPanel e implementa ActionListener per gestire il loop di gioco
