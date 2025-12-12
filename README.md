@@ -72,15 +72,6 @@ Il file contiene:
 - Utilizzi successivi effettuano lo scambio
 - Hold bloccato finché non arriva un nuovo pezzo
 
-### Scelta della Difficoltà
-- La funzione `scegliDifficolta()` mostra un popup all’avvio per selezionare la difficoltà del gioco.
-- Opzioni disponibili: **Facile**, **Normale**, **Difficile**.
-- Imposta la velocità iniziale del gioco in base alla scelta:
-  - Facile → caduta lenta dei pezzi
-  - Normale → velocità standard
-  - Difficile → caduta veloce dei pezzi
-- La difficoltà viene memorizzata e applicata al Timer prima dell’inizio della partita.
-
 ### Input da Tastiera
 - Gestito tramite `KeyAdapter` nel pannello
 - Mappatura semplice e immediata, integrata con la UI
